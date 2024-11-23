@@ -1,4 +1,4 @@
-export interface Categoria {
+export interface CategoriasIngresos {
     id: number;
     nombre: string;
 }
