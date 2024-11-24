@@ -6,5 +6,6 @@ export interface Ingreso {
     monto: number;
     categoria: CategoriasIngresos;
     fecha: Date;
+    total: number;
 }
 

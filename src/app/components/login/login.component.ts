@@ -9,4 +9,8 @@ import { Component } from '@angular/core';
 })
 export class LoginComponent {
 
+  login: any = {
+    email: '',
+    contraseña: ''
+  }
 }
