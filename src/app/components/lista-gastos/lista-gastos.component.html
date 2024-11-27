@@ -1,0 +1,32 @@
+<div>
+    <h1>Listado de Gastos</h1>
+
+    <!-- Selector para cambiar rango -->
+    <select id="rango" #selectRango (change)="cambiarRango(selectRango.value)">
+        <option value="día">Día</option>
+        <option value="semana" selected>Semana</option>
+        <option value="mes">Mes</option>
+    </select>
+
+    <!-- Mostrar balance -->
+    <p>Total de Gastos: {{ totalGastos | currency }}</p>
+
+    <!-- Lista de gastos por día -->
+    <div *ngFor="let dia of gastosPorDia | keyvalue">
+        <h3>Gastos del día: {{ dia.key }}</h3>
+        <ul>
+            <li *ngFor="let gasto of dia.value">
+                <span>
+                    {{ gasto.descripcion }} - {{ gasto.monto | currency }}
+                    ({{ gasto.categoria.nombre }})
+                </span>
+                <span>
+                    <button class="btn btn-success" (click)="eliminarGasto(gasto.id)">Editar</button>
+                </span>
+                <span>
+                    <button class="btn btn-danger" (click)="eliminarGasto(gasto.id)">Eliminar</button>
+                </span>
+            </li>
+        </ul>
+    </div>
+</div>
