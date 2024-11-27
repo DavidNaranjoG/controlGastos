@@ -40,7 +40,7 @@ export const controlGastosData: any = {
                 id: 1,
                 nombre: "casa"
             },
-            fecha: new Date("2024-11-20")
+            fecha: new Date("2024-11-24")
         }
     ],
 }

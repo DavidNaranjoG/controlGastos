@@ -19,6 +19,7 @@ export class ListaGastosComponent implements OnInit {
 
   gastos: Gasto[] = [];
   id: number = 0;
+  balance: number = 0;
 
   constructor(private transaccionesService: TransaccionesService) {
     // Inicializamos con el rango actual (semana por defecto)
@@ -33,6 +34,13 @@ export class ListaGastosComponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerGastos();
+    this.cargarGasto();
+    this.getBalance();
+  }
+
+  getBalance(){
+    this.balance = this.transaccionesService.getBalance();
+    return this.balance
   }
 
   cargarGasto(): void {
@@ -41,11 +49,15 @@ export class ListaGastosComponent implements OnInit {
   }
 
   eliminarGasto(id: number): void {
-    const resultado = this.transaccionesService.eliminarGasto(id);
-    this.gastos = resultado.ingresos;
-    console.log(`Gasto con id ${id} eliminado.`);
-    // Actualizar la vista
-    this.obtenerGastos();
+    if (confirm('¿Estás seguro de que quieres eliminar este gasto?')) {
+      const resultado = this.transaccionesService.eliminarGasto(id);
+      this.gastos = resultado.gastos;
+      console.log(`Gasto con id ${id} eliminado.`);
+      // Actualizar la vista
+      this.obtenerGastos();
+      this.getBalance();
+    }
+
   }
   // Método para actualizar los datos según el rango de fechas
   obtenerGastos(): void {

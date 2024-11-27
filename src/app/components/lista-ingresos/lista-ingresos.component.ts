@@ -19,7 +19,7 @@ export class ListaIngresosComponent implements OnInit {
 
   ingresos: Ingreso[] = [];
   id: number = 0;
-
+  balance: number = 0;
   constructor(private transaccionesService: TransaccionesService) {
     // Inicializamos con el rango actual (semana por defecto)
     const hoy = new Date();
@@ -34,8 +34,13 @@ export class ListaIngresosComponent implements OnInit {
   ngOnInit(): void {
     this.obtenerIngresos();
     this.cargarIngresos();
+    this.getBalance();
   }
 
+  getBalance(){
+    this.balance = this.transaccionesService.getBalance();
+    return this.balance
+  }
 
   cargarIngresos(): void {
     const controlGastos = this.transaccionesService.getControlGastos();
@@ -43,11 +48,15 @@ export class ListaIngresosComponent implements OnInit {
   }
 
   eliminarIngreso(id: number): void {
-    const resultado = this.transaccionesService.eliminarIngreso(id);
-    this.ingresos = resultado.ingresos;
-    console.log(`Ingreso con id ${id} eliminado.`);
-    // Actualizar la vista
-    this.obtenerIngresos();
+    if (confirm('¿Estás seguro de que quieres eliminar este gasto?')) {
+      const resultado = this.transaccionesService.eliminarIngreso(id);
+      this.ingresos = resultado.ingresos;
+      console.log(`Ingreso con id ${id} eliminado.`);
+      // Actualizar la vista
+      this.obtenerIngresos();
+      this.getBalance();
+    }
+
   }
 
 

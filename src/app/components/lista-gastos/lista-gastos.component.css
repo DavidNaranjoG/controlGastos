@@ -1,0 +1,21 @@
+.container {
+    margin: 20px auto;
+    max-width: 800px;
+  }
+  
+  .text-center {
+    margin-bottom: 20px;
+  }
+  
+  .text-end {
+    font-size: 1.1em;
+  }
+  
+  .table {
+    margin-top: 20px;
+  }
+  
+  .btn {
+    min-width: 80px;
+  }
+  

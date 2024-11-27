@@ -1,32 +1,49 @@
-<div>
-    <h1>Listado de Ingresos</h1>
+<div class="container">
+  <!-- Balance general -->
+  <div class="balance-general mb-4 text-center">
+    <h2 class="text-primary">Balance General: {{ balance | currency }}</h2>
+  </div>
+  <h1 class="text-center">Listado de Ingresos</h1>
 
-    <!-- Selector para cambiar rango -->
-    <select id="rango" #selectRango (change)="cambiarRango(selectRango.value)">
-        <option value="día">Día</option>
-        <option value="semana" selected>Semana</option>
-        <option value="mes">Mes</option>
+  <!-- Selector para cambiar rango -->
+  <div class="mb-3 text-center">
+    <label for="rango" class="form-label">Selecciona un rango:</label>
+    <select id="rango" class="form-select w-auto d-inline-block" #selectRango
+      (change)="cambiarRango(selectRango.value)">
+      <option value="día">Día</option>
+      <option value="semana" selected>Semana</option>
+      <option value="mes">Mes</option>
     </select>
+  </div>
 
-    <!-- Mostrar balance -->
-    <p>Total de Gastos: {{ totalIngresos | currency }}</p>
+  <!-- Mostrar balance -->
+  <p class="text-end">Total de Ingresos: <strong>{{ totalIngresos | currency }}</strong></p>
+  <button class="btn btn-warning">Añadir</button>
 
-    <!-- Lista de gastos por día -->
-    <div *ngFor="let dia of ingresoPorDia | keyvalue">
-        <h3>Ingresos del día: {{ dia.key }}</h3>
-        <ul>
-            <li *ngFor="let ingreso of dia.value">
-                <span>
-                    {{ ingreso.descripcion }} - {{ ingreso.monto | currency }}
-                    ({{ ingreso.categoria.nombre }})
-                </span>
-                <span>
-                    <button class="btn btn-success" (click)="eliminarIngreso(ingreso.id)">Editar</button>
-                </span>
-                <span>
-                    <button class="btn btn-danger" (click)="eliminarIngreso(ingreso.id)">Eliminar</button>
-                </span>
-            </li>
-        </ul>
-    </div>
+  <!-- Tabla de ingresos -->
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Descripción</th>
+        <th>Monto</th>
+        <th>Categoría</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let dia of ingresoPorDia | keyvalue">
+        <tr *ngFor="let ingreso of dia.value">
+          <td>{{ dia.key }}</td>
+          <td>{{ ingreso.descripcion }}</td>
+          <td>{{ ingreso.monto | currency }}</td>
+          <td>{{ ingreso.categoria.nombre }}</td>
+          <td>
+            <button class="btn btn-success btn-sm me-1" (click)="eliminarIngreso(ingreso.id)">Editar</button>
+            <button class="btn btn-danger btn-sm" (click)="eliminarIngreso(ingreso.id)">Eliminar</button>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
 </div>
