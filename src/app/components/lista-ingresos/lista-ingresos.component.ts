@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { TransaccionesService } from '../../services/transacciones.service';
 import { CommonModule } from '@angular/common';
 import { Ingreso } from '../../models/ingresos';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'listaIngresos',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './lista-ingresos.component.html',
   styleUrl: './lista-ingresos.component.css'
 })

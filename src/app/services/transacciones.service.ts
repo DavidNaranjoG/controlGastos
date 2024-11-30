@@ -3,11 +3,18 @@ import { controlGastosData } from '../data/controlGastosData';
 import { ControlGastos } from '../models/controlGastos';
 import { Gasto } from '../models/gastos';
 import { Ingreso } from '../models/ingresos';
+import { CategoriasGastos } from '../models/categoriasGastos';
+import { categoriasGastosData } from '../data/categoriasGastosData';
+import { CategoriasIngresos } from '../models/categoriasIngresos';
+import { categoriasIngresosData } from '../data/categoriasIngresosData';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransaccionesService {
+
+  private categoriasGasto: CategoriasGastos[] = categoriasGastosData;
+  private categoriasIngreso: CategoriasIngresos[] = categoriasIngresosData
 
   private controlGastos: ControlGastos = controlGastosData;
 
@@ -110,5 +117,54 @@ export class TransaccionesService {
   // Metodo para obtener el balance general
   getBalance(): number {
     return this.getTotalIngresos() - this.getTotalGastos();
+  }
+
+//Metodo para actualizar un Gasto
+  actualizarGasto(id: number, gastoActualizado: Gasto): void {
+    // Verificar que la fecha no sea mayor a la fecha de hoy
+    const fechaHoy = new Date();
+    const fechaSeleccionada = new Date(gastoActualizado.fecha);
+
+    if (fechaSeleccionada > fechaHoy) {
+      console.warn('No puedes seleccionar una fecha mayor a la de hoy.');
+      return;
+    }
+    const index = this.controlGastos.gastos.findIndex(g => g.id === id);
+    if (index !== -1) {
+      this.controlGastos.gastos[index] = gastoActualizado;
+    } else {
+      console.warn(`Gasto con ID ${id} no encontrado para actualizar.`);
+    }
+  }
+
+
+  // Obtener las categorías de gastos
+  getCategoriasGastos(): CategoriasGastos[] {
+    return this.categoriasGasto
+  }
+
+
+//Metodo para actualizar un ingreso
+  actualizarIngreso(id: number, ingresoActualizado: Ingreso): void {
+    // Verificar que la fecha no sea mayor a la fecha de hoy
+    const fechaHoy = new Date();
+    const fechaSeleccionada = new Date(ingresoActualizado.fecha);
+
+    if (fechaSeleccionada > fechaHoy) {
+      console.warn('No puedes seleccionar una fecha mayor a la de hoy.');
+      return;
+    }
+    const index = this.controlGastos.ingresos.findIndex(g => g.id === id);
+    if (index !== -1) {
+      this.controlGastos.ingresos[index] = ingresoActualizado;
+    } else {
+      console.warn(`Gasto con ID ${id} no encontrado para actualizar.`);
+    }
+  }
+
+
+  // Obtener las categorías de gastos
+  getCategoriasIngresos(): CategoriasIngresos[] {
+    return this.categoriasIngreso
   }
 }

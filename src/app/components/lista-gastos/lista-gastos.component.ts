@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { TransaccionesService } from '../../services/transacciones.service';
 import { CommonModule } from '@angular/common';
 import { Gasto } from '../../models/gastos';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'listaGastos',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './lista-gastos.component.html',
   styleUrl: './lista-gastos.component.css'
 })
@@ -20,6 +21,7 @@ export class ListaGastosComponent implements OnInit {
   gastos: Gasto[] = [];
   id: number = 0;
   balance: number = 0;
+  router: any;
 
   constructor(private transaccionesService: TransaccionesService) {
     // Inicializamos con el rango actual (semana por defecto)
@@ -36,11 +38,18 @@ export class ListaGastosComponent implements OnInit {
     this.obtenerGastos();
     this.cargarGasto();
     this.getBalance();
+    this.getControlGastos()
   }
+  getControlGastos() {
+    return this.transaccionesService.getControlGastos();
+    
+  }
+  
 
   getBalance(){
     this.balance = this.transaccionesService.getBalance();
     return this.balance
+    
   }
 
   cargarGasto(): void {

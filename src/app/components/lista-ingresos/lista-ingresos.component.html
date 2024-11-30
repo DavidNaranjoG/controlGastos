@@ -28,7 +28,8 @@
         <th>Descripción</th>
         <th>Monto</th>
         <th>Categoría</th>
-        <th>Acciones</th>
+        <th>Editar</th>
+        <th>Eliminar</th>
       </tr>
     </thead>
     <tbody>
@@ -39,8 +40,12 @@
           <td>{{ ingreso.monto | currency }}</td>
           <td>{{ ingreso.categoria.nombre }}</td>
           <td>
-            <button class="btn btn-success btn-sm me-1" (click)="eliminarIngreso(ingreso.id)">Editar</button>
-            <button class="btn btn-danger btn-sm" (click)="eliminarIngreso(ingreso.id)">Eliminar</button>
+            <button class="btn btn-success btn-sm me-1"  [routerLink]="['/editarIngreso', ingreso.id]">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+            <button class="btn btn-danger btn-sm" (click)="eliminarIngreso(ingreso.id)">
+              <i class="bi bi-trash"></i> <!-- Icono de basura -->
+            </button>
           </td>
         </tr>
       </ng-container>
