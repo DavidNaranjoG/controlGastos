@@ -6,13 +6,19 @@ import { ListaIngresosComponent } from './components/lista-ingresos/lista-ingres
 import { AppComponent } from './app.component';
 import { EditarIngresoComponent } from './components/editar-ingreso/editar-ingreso.component';
 import { AgregarIngresoComponent } from './components/agregar-ingreso/agregar-ingreso.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegistroComponent } from './components/registro/registro.component';
+import { InicioComponent } from './components/inicio/inicio.component';
 
 export const routes: Routes = [
+    { path: '', component: InicioComponent},
     { path: 'agregarIngreso', component: AgregarIngresoComponent }, // Ruta predeterminada para mostrar la lista
     { path: 'editarGasto/:id', component: EditarGastoComponent },
     { path: 'editarIngreso/:id', component: EditarIngresoComponent },
     { path: 'listaGastos', component: ListaGastosComponent },
     { path: 'listaIngresos', component: ListaIngresosComponent },
+    { path: 'login', component: LoginComponent},
+    { path: 'registro', component: RegistroComponent}
 ];
 
 @NgModule({

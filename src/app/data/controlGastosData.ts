@@ -8,7 +8,7 @@ export const controlGastosData: any = {
                 id: 1,
                 nombre: "Salario"
             },
-            fecha: new Date("2024-11-15")
+            fecha: new Date("2024-12-1")
         },
         {
             id: 2,
@@ -18,7 +18,7 @@ export const controlGastosData: any = {
                 id: 2,
                 nombre: "Inversion"
             },
-            fecha: new Date("2024-11-20")
+            fecha: new Date("2024-12-1")
         }
     ],
     gastos: [
@@ -30,7 +30,7 @@ export const controlGastosData: any = {
                 id: 1,
                 nombre: "casa"
             },
-            fecha: new Date("2024-11-7")
+            fecha: new Date("2024-12-1")
         },
         {
             id: 2,
@@ -40,7 +40,7 @@ export const controlGastosData: any = {
                 id: 1,
                 nombre: "casa"
             },
-            fecha: new Date("2024-11-18")
+            fecha: new Date("2024-12-1")
         }
     ],
 }

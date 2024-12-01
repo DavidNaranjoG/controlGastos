@@ -66,12 +66,12 @@ export class EditarIngresoComponent implements OnInit {
       this.transaccionesService.actualizarIngreso(this.ingresoId, ingresoActualizado);
 
       // Redirigir a la lista de gastos
-      this.router.navigate(['/']);
+      this.router.navigate(['/listaIngresos']);
     }
   }
 
   cancelar(): void {
-    this.router.navigate(['/']);
+    this.router.navigate(['/listaIngresos']);
   }
 
 

@@ -90,4 +90,8 @@ export class ListaIngresosComponent implements OnInit {
   anadirIngreso(): void{
     this.router.navigate(['/agregarIngreso'])
   }
+
+  verGastos(): void {
+    this.router.navigate(['/listaGastos'])
+  }
 }

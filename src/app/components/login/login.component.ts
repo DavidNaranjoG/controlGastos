@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'login',
@@ -12,5 +13,15 @@ export class LoginComponent {
   login: any = {
     email: '',
     contraseña: ''
+  }
+
+  constructor(private router: Router){}
+
+  volverInicio(): void{
+    this.router.navigate(['/'])
+  }
+
+  verListaIngresos(): void {
+    this.router.navigate(['/listaIngresos'])
   }
 }

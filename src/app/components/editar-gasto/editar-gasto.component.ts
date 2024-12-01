@@ -67,12 +67,12 @@ export class EditarGastoComponent implements OnInit {
       this.transaccionesService.actualizarGasto(this.gastoId, gastoActualizado);
 
       // Redirigir a la lista de gastos
-      this.router.navigate(['/']);
+      this.router.navigate(['/listaGastos']);
     }
   }
 
   cancelar(): void {
-    this.router.navigate(['/']);
+    this.router.navigate(['/listaGastos']);
   }
 
 }

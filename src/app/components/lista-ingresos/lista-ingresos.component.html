@@ -1,4 +1,8 @@
 <div class="container">
+  <div class="selectorGastos">
+    <button class="btn btn-danger" (click)="verGastos()">Ver Gastos</button>
+  </div>
+
   <!-- Balance general -->
   <div class="balance-general mb-4 text-center">
     <h2 class="text-primary">Balance General: {{ balance | currency }}</h2>
@@ -53,4 +57,4 @@
       </ng-container>
     </tbody>
   </table>
-</div>  
+</div>

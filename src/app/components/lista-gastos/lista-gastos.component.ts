@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TransaccionesService } from '../../services/transacciones.service';
 import { CommonModule } from '@angular/common';
 import { Gasto } from '../../models/gastos';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'listaGastos',
@@ -22,9 +22,8 @@ export class ListaGastosComponent implements OnInit {
   gastos: Gasto[] = [];
   id: number = 0;
   balance: number = 0;
-  router: any;
 
-  constructor(private transaccionesService: TransaccionesService) {
+  constructor(private transaccionesService: TransaccionesService, private router: Router) {
     // Inicializamos con el rango actual (semana por defecto)
     this.hoy = this.transaccionesService.truncarHora(new Date());
     this.fechaFin = this.transaccionesService.truncarHora(new Date(this.hoy.getFullYear(), this.hoy.getMonth() +1, this.hoy.getDate()));
@@ -89,6 +88,13 @@ export class ListaGastosComponent implements OnInit {
       this.fechaFin = this.transaccionesService.truncarHora(new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0));
     }
     this.obtenerGastos(); // Actualizar datos
+  }
+  anadirIngreso(): void{
+    this.router.navigate(['/agregarGasto'])
+  }
+
+  verIngresos(): void {
+    this.router.navigate(['/listaIngresos'])
   }
 
 }

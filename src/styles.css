@@ -1,1 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
+html, body {
+    height: 100%;
+    margin: 0;
+  }
+  
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .d-flex {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .flex-grow-1 {
+    flex: 1; /* Empuja el contenido para ocupar el espacio disponible */
+  }
+  
+  footer {
+    position: relative; /* Asegura que el footer esté justo después del contenido */
+  }
+  
