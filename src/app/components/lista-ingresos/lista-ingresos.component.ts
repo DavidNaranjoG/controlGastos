@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TransaccionesService } from '../../services/transacciones.service';
 import { CommonModule } from '@angular/common';
 import { Ingreso } from '../../models/ingresos';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'listaIngresos',
@@ -15,20 +15,24 @@ export class ListaIngresosComponent implements OnInit {
   ingresoPorDia: { [key: string]: any[] } = {};
   totalIngresos: number = 0;
 
+  hoy!: Date;
   fechaInicio: Date;
   fechaFin: Date;
+  
 
   ingresos: Ingreso[] = [];
   id: number = 0;
   balance: number = 0;
-  constructor(private transaccionesService: TransaccionesService) {
+  constructor(
+    private transaccionesService: TransaccionesService, private router: Router
+  ) {
     // Inicializamos con el rango actual (semana por defecto)
-    const hoy = new Date();
-    this.fechaFin = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
+    this.hoy = this.transaccionesService.truncarHora(new Date());
+    this.fechaFin = this.transaccionesService.truncarHora(new Date(this.hoy.getFullYear(), this.hoy.getMonth() +1, this.hoy.getDate()));
     this.fechaInicio = new Date(
-      hoy.getFullYear(),
-      hoy.getMonth(),
-      hoy.getDate() - 6 // Semana actual
+      this.hoy.getFullYear(),
+      this.hoy.getMonth(),
+      this.hoy.getDate() - 6 // Semana actual
     );
   }
 
@@ -69,18 +73,21 @@ export class ListaIngresosComponent implements OnInit {
 
   // Cambiar rango: día, semana, mes
   cambiarRango(opcion: string): void {
-    const hoy = new Date();
+    const hoy = this.hoy;
     if (opcion === 'día') {
       this.fechaInicio = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
-      this.fechaFin = this.fechaInicio;
+      this.fechaFin = this.transaccionesService.truncarHora(new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate()));
     } else if (opcion === 'semana') {
       this.fechaInicio = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate() - 6);
       this.fechaFin = hoy;
     } else if (opcion === 'mes') {
       this.fechaInicio = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
-      this.fechaFin = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0);
+      this.fechaFin = this.transaccionesService.truncarHora(new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0));
     }
     this.obtenerIngresos(); // Actualizar datos
   }
 
+  anadirIngreso(): void{
+    this.router.navigate(['/agregarIngreso'])
+  }
 }

@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './editar-gasto.component.html',
   styleUrl: './editar-gasto.component.css'
 })
-export class EditarGastoComponent {
+export class EditarGastoComponent implements OnInit {
  
   gastoForm!: FormGroup;
   gastoId!: number;
@@ -50,6 +50,8 @@ export class EditarGastoComponent {
 
   guardarCambios(): void {
     if (this.gastoForm.valid) {
+      const fechaString = this.gastoForm.value.fecha; // Ejemplo: "30/11/2024"
+      const [dia, mes, anio] = fechaString.split('-').map(Number);
       const gastoActualizado: Gasto = {
         ...this.gastoOriginal,
         descripcion: this.gastoForm.value.descripcion,
@@ -58,7 +60,7 @@ export class EditarGastoComponent {
           id: this.gastoOriginal.categoria.id,
           nombre: this.gastoForm.value.categoria
         },
-        fecha: new Date(this.gastoForm.value.fecha)
+        fecha: new Date(dia, mes-1, anio)
       };
 
       // Actualizar el gasto en el servicio

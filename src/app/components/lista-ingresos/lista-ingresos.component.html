@@ -7,10 +7,10 @@
 
   <!-- Selector para cambiar rango -->
   <div class="mb-3 text-center">
-    <label for="rango" class="form-label">Selecciona un rango:</label>
+    <label for="rango" class="form-label">Selecciona un rango: </label>
     <select id="rango" class="form-select w-auto d-inline-block" #selectRango
       (change)="cambiarRango(selectRango.value)">
-      <option value="día">Día</option>
+      <option value="día">Hoy</option>
       <option value="semana" selected>Semana</option>
       <option value="mes">Mes</option>
     </select>
@@ -18,7 +18,7 @@
 
   <!-- Mostrar balance -->
   <p class="text-end">Total de Ingresos: <strong>{{ totalIngresos | currency }}</strong></p>
-  <button class="btn btn-warning">Añadir</button>
+  <button class="btn btn-warning" (click)="anadirIngreso()">Añadir</button>
 
   <!-- Tabla de ingresos -->
   <table class="table table-striped">
@@ -40,9 +40,11 @@
           <td>{{ ingreso.monto | currency }}</td>
           <td>{{ ingreso.categoria.nombre }}</td>
           <td>
-            <button class="btn btn-success btn-sm me-1"  [routerLink]="['/editarIngreso', ingreso.id]">
+            <button class="btn btn-success btn-sm me-1" [routerLink]="['/editarIngreso', ingreso.id]">
               <i class="bi bi-pencil-square"></i>
             </button>
+          </td>
+          <td>
             <button class="btn btn-danger btn-sm" (click)="eliminarIngreso(ingreso.id)">
               <i class="bi bi-trash"></i> <!-- Icono de basura -->
             </button>
@@ -51,4 +53,4 @@
       </ng-container>
     </tbody>
   </table>
-</div>
+</div>  

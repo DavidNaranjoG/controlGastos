@@ -17,8 +17,11 @@ export class TransaccionesService {
   private categoriasIngreso: CategoriasIngresos[] = categoriasIngresosData
 
   private controlGastos: ControlGastos = controlGastosData;
+  
 
-  constructor() { }
+  constructor() {
+    console.log("ests es el objeto creado: ", this.controlGastos)
+   }
 
 
   // Metodo para obtener la informacion de los gastos e ingresos 
@@ -26,6 +29,7 @@ export class TransaccionesService {
     const balance = this.getBalance();
     return { ...this.controlGastos, balance }
   }
+  
 
 
   // Verifica si una fecha está en un rango dado
@@ -66,10 +70,12 @@ export class TransaccionesService {
       this.estaEnRango(new Date(gasto.fecha), fechaInicio, fechaFin)
     );
   }
+  
 
   // Calcula el total de ingresos en un rango de fechas
   getTotalIngresosPorRango(fechaInicio: Date, fechaFin: Date): number {
     const ingresos = this.getIngresosPorRango(fechaInicio, fechaFin);
+    console.log("ingresos por rango: ", ingresos)
     return ingresos.reduce((sum, ingreso) => sum + ingreso.monto, 0);
   }
 
@@ -92,6 +98,14 @@ export class TransaccionesService {
   }
 
   // Organiza los ingresos por día dentro de un rango
+
+  truncarHora(fecha: Date): Date {
+    const truncada = new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate());
+    truncada.setHours(23, 59, 59, 999); // Establecer la hora a las 23:59:59.999
+    return truncada;
+  }
+  
+
   organizarIngresosPorDia(fechaInicio: Date, fechaFin: Date): { [key: string]: Ingreso[] } {
     const ingresos = this.getIngresosPorRango(fechaInicio, fechaFin);
     return ingresos.reduce((acumulador: { [key: string]: Ingreso[] }, ingreso) => {
@@ -99,6 +113,7 @@ export class TransaccionesService {
       acumulador[dia] = acumulador[dia] || [];
       acumulador[dia].push(ingreso);
       return acumulador;
+      
     }, {});
   }
 
@@ -126,7 +141,7 @@ export class TransaccionesService {
     const fechaSeleccionada = new Date(gastoActualizado.fecha);
 
     if (fechaSeleccionada > fechaHoy) {
-      console.warn('No puedes seleccionar una fecha mayor a la de hoy.');
+      alert('No puedes seleccionar una fecha mayor a la de hoy.');
       return;
     }
     const index = this.controlGastos.gastos.findIndex(g => g.id === id);
@@ -151,10 +166,10 @@ export class TransaccionesService {
     const fechaSeleccionada = new Date(ingresoActualizado.fecha);
 
     if (fechaSeleccionada > fechaHoy) {
-      console.warn('No puedes seleccionar una fecha mayor a la de hoy.');
+      alert('No puedes seleccionar una fecha mayor a la de hoy.');
       return;
     }
-    const index = this.controlGastos.ingresos.findIndex(g => g.id === id);
+    const index = this.controlGastos.ingresos.findIndex(i => i.id === id);
     if (index !== -1) {
       this.controlGastos.ingresos[index] = ingresoActualizado;
     } else {
@@ -163,7 +178,7 @@ export class TransaccionesService {
   }
 
 
-  // Obtener las categorías de gastos
+  // Obtener las categorías de Ingresos
   getCategoriasIngresos(): CategoriasIngresos[] {
     return this.categoriasIngreso
   }

@@ -15,6 +15,7 @@ export class ListaGastosComponent implements OnInit {
   gastosPorDia: { [key: string]: any[] } = {};
   totalGastos: number = 0;
 
+  hoy !: Date;
   fechaInicio: Date;
   fechaFin: Date;
 
@@ -25,12 +26,12 @@ export class ListaGastosComponent implements OnInit {
 
   constructor(private transaccionesService: TransaccionesService) {
     // Inicializamos con el rango actual (semana por defecto)
-    const hoy = new Date();
-    this.fechaFin = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
+    this.hoy = this.transaccionesService.truncarHora(new Date());
+    this.fechaFin = this.transaccionesService.truncarHora(new Date(this.hoy.getFullYear(), this.hoy.getMonth() +1, this.hoy.getDate()));
     this.fechaInicio = new Date(
-      hoy.getFullYear(),
-      hoy.getMonth(),
-      hoy.getDate() - 6 // Semana actual
+      this.hoy.getFullYear(),
+      this.hoy.getMonth(),
+      this.hoy.getDate() - 6 // Semana actual
     );
   }
 
@@ -38,12 +39,12 @@ export class ListaGastosComponent implements OnInit {
     this.obtenerGastos();
     this.cargarGasto();
     this.getBalance();
-    this.getControlGastos()
+    // this.getControlGastos()
   }
-  getControlGastos() {
-    return this.transaccionesService.getControlGastos();
+  // getControlGastos() {
+  //   return this.transaccionesService.getControlGastos();
     
-  }
+  // }
   
 
   getBalance(){
@@ -76,7 +77,7 @@ export class ListaGastosComponent implements OnInit {
 
   // Cambiar rango: día, semana, mes
   cambiarRango(opcion: string): void {
-    const hoy = new Date();
+    const hoy = this.hoy
     if (opcion === 'día') {
       this.fechaInicio = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
       this.fechaFin = this.fechaInicio;
@@ -85,7 +86,7 @@ export class ListaGastosComponent implements OnInit {
       this.fechaFin = hoy;
     } else if (opcion === 'mes') {
       this.fechaInicio = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
-      this.fechaFin = new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0);
+      this.fechaFin = this.transaccionesService.truncarHora(new Date(hoy.getFullYear(), hoy.getMonth() + 1, 0));
     }
     this.obtenerGastos(); // Actualizar datos
   }

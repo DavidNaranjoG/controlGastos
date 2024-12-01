@@ -26,7 +26,7 @@ export class EditarIngresoComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private transaccionesService: TransaccionesService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Obtener el ID del gasto desde la ruta
@@ -42,14 +42,15 @@ export class EditarIngresoComponent implements OnInit {
       categoria: [this.ingresoOriginal.categoria.nombre, Validators.required], // Usar el id de la categoría
       fecha: [this.ingresoOriginal.fecha.toISOString().split('T')[0], Validators.required] // Convertimos la fecha a YYYY-MM-DD
     });
-     // Obtener las categorías
-     this.categorias = this.transaccionesService.getCategoriasIngresos();
-     console.log(this.categorias);
+    // Obtener las categorías
+    this.categorias = this.transaccionesService.getCategoriasIngresos();
   }
 
   guardarCambios(): void {
     if (this.ingresoForm.valid) {
-      const gastoActualizado: Gasto = {
+      const fechaString = this.ingresoForm.value.fecha; // Ejemplo: "30/11/2024"
+      const [dia, mes, anio] = fechaString.split('-').map(Number);
+      const ingresoActualizado: Ingreso = {
         ...this.ingresoOriginal,
         descripcion: this.ingresoForm.value.descripcion,
         monto: this.ingresoForm.value.monto,
@@ -57,11 +58,12 @@ export class EditarIngresoComponent implements OnInit {
           id: this.ingresoOriginal.categoria.id,
           nombre: this.ingresoForm.value.categoria
         },
-        fecha: new Date(this.ingresoForm.value.fecha)
+        fecha: new Date(dia, mes-1, anio)
+
       };
 
       // Actualizar el gasto en el servicio
-      this.transaccionesService.actualizarGasto(this.ingresoId, gastoActualizado);
+      this.transaccionesService.actualizarIngreso(this.ingresoId, ingresoActualizado);
 
       // Redirigir a la lista de gastos
       this.router.navigate(['/']);
@@ -71,6 +73,6 @@ export class EditarIngresoComponent implements OnInit {
   cancelar(): void {
     this.router.navigate(['/']);
   }
-  
+
 
 }

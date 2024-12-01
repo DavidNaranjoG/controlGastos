@@ -8,10 +8,10 @@
 
     <!-- Selector para cambiar rango -->
     <div class="mb-3 text-center">
-        <label for="rango" class="form-label">Selecciona un rango:</label>
+        <label for="rango" class="form-label">Selecciona un rango: </label>
         <select id="rango" class="form-select w-auto d-inline-block" #selectRango
             (change)="cambiarRango(selectRango.value)">
-            <option value="día">Día</option>
+            <option value="día">Hoy</option>
             <option value="semana" selected>Semana</option>
             <option value="mes">Mes</option>
         </select>
