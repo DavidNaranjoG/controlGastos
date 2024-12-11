@@ -6,6 +6,7 @@
     <!-- Balance general -->
     <div class="balance-general mb-4 text-center">
         <h2 class="text-primary">Balance General: {{ balance | currency }}</h2>
+       
     </div>
     <h1 class="text-center">Listado de Gastos</h1>
 
@@ -22,7 +23,7 @@
 
     <!-- Mostrar balance -->
     <p class="text-end">Total de Gastos: <strong>{{ totalGastos | currency }}</strong></p>
-    <button class="btn btn-warning">Añadir</button>
+     <button class="btn btn-warning" (click)="anadirGasto()">Añadir</button>
 
     <!-- Tabla de gastos -->
     <table class="table table-striped">

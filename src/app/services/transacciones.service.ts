@@ -177,6 +177,36 @@ export class TransaccionesService {
     }
   }
 
+  agregarIngreso(ingresoNuevo: Ingreso): void{
+    // Verificar que la fecha no sea mayor a la fecha de hoy
+    const fechaHoy = new Date();
+    const fechaSeleccionada = new Date(ingresoNuevo.fecha);
+    if (fechaSeleccionada > fechaHoy) {
+      alert('No puedes seleccionar una fecha mayor a la de hoy.');
+      return;
+    }else {
+      
+      this.controlGastos.ingresos.push(ingresoNuevo)
+      console.log(controlGastosData.Ingresos)
+      return
+    }
+
+  }
+  agregarGasto(gastoNuevo: Gasto): void{
+    // Verificar que la fecha no sea mayor a la fecha de hoy
+    const fechaHoy = new Date();
+    const fechaSeleccionada = new Date(gastoNuevo.fecha);
+    if (fechaSeleccionada > fechaHoy) {
+      alert('No puedes seleccionar una fecha mayor a la de hoy.');
+      return;
+    }else {
+      
+      this.controlGastos.gastos.push(gastoNuevo)
+      console.log(controlGastosData.gastos)
+      return
+    }
+
+  }
 
   // Obtener las categorías de Ingresos
   getCategoriasIngresos(): CategoriasIngresos[] {

@@ -89,7 +89,7 @@ export class ListaGastosComponent implements OnInit {
     }
     this.obtenerGastos(); // Actualizar datos
   }
-  anadirIngreso(): void{
+  anadirGasto(): void{
     this.router.navigate(['/agregarGasto'])
   }
 

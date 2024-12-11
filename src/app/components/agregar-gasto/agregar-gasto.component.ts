@@ -14,62 +14,60 @@ import { Gasto } from '../../models/gastos';
   templateUrl: './agregar-gasto.component.html',
   styleUrl: './agregar-gasto.component.css'
 })
-export class AgregarGastoComponent implements OnInit {
-
-  anadirGastoForm!: FormGroup;
-  gastoId!: number;
-  gastoOriginal!: Gasto;
-  categorias: CategoriasGastos[]=[];
+export class AgregarGastoComponent implements OnInit {anadirGastoForm!: FormGroup;
+  gastoNuevo!: Gasto;
+  categorias: CategoriasGastos[] = [];
+  controlGastos: any;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
     private transaccionesService: TransaccionesService
-  ){}
+  ) { }
 
   ngOnInit(): void {
-    // Obtener el ID del gasto desde la ruta
-    this.gastoId = Number(this.route.snapshot.paramMap.get('id'));
+    this.controlGastos = this.transaccionesService.getControlGastos();
+    this.gastoNuevo = {
+      id: 0, // ID temporal; se asignará en el servicio
+      descripcion: '',
+      monto: 0,
+      categoria: { id: 0, nombre: '' },
+      fecha: new Date(),
+      total: 0
+    };
 
-    // Cargar el gasto original
-    this.gastoOriginal = this.transaccionesService.getControlGastos().gastos.find(g => g.id === this.gastoId)!;
+    this.categorias = this.transaccionesService.getCategoriasGastos();
 
-    // Inicializar el formulario con los datos del gasto
     this.anadirGastoForm = this.fb.group({
-      descripcion: [],
-      monto: [],
-      categoria: [], // Usar el id de la categoría
-      fecha: [] // Convertimos la fecha a YYYY-MM-DD
+      descripcion: [, Validators.required],
+      monto: [[Validators.required, Validators.min(0.01)]],
+      categoria: [Validators.required],
+      fecha: [
+        // this.ingresoNuevo.fecha.toISOString().split('T')[0],
+        Validators.required
+      ],
     });
-    // Obtener las categorías
-    this.categorias = this.transaccionesService.getCategoriasIngresos();
   }
 
-  guardarNuevoGasto(){
+  guardarNuevoGasto(): void {
     if (this.anadirGastoForm.valid) {
-      const fechaString = this.anadirGastoForm.value.fecha; // Ejemplo: "30/11/2024"
-      const [dia, mes, anio] = fechaString.split('-').map(Number);
-      const gastoActualizado: Gasto = {
-        ...this.anadirGastoForm,
+      const gastoNuevo: Gasto = {
+        id: this.controlGastos.ingresos.length + 1, // Generar un ID único
         descripcion: this.anadirGastoForm.value.descripcion,
         monto: this.anadirGastoForm.value.monto,
-        categoria: {
-          id: this.gastoOriginal.categoria.id,
-          nombre: this.anadirGastoForm.value.categoria
-        },
-        fecha: new Date(dia, mes - 1, anio),
-        id: 0,
+        categoria: this.categorias.find(
+          (c) => c.nombre === this.anadirGastoForm.value.categoria
+        )!,
+        fecha: new Date(this.anadirGastoForm.value.fecha),
         total: 0
       };
 
-      // Actualizar el gasto en el servicio
-      this.transaccionesService.actualizarIngreso(this.gastoId, gastoActualizado);
-
-      // Redirigir a la lista de gastos
+      this.transaccionesService.agregarGasto(gastoNuevo);
       this.router.navigate(['/listaGastos']);
     }
   }
+
   cancelar(): void {
     this.router.navigate(['/listaGastos']);
   }

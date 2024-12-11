@@ -16,49 +16,56 @@ import { TransaccionesService } from '../../services/transacciones.service';
 })
 export class AgregarIngresoComponent implements OnInit {
   anadirIngresoForm!: FormGroup;
-  ingresoId!: number;
-  ingresoOriginal!: Ingreso;
+  ingresoNuevo!: Ingreso;
   categorias: CategoriasIngresos[] = [];
+  controlGastos: any;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
     private transaccionesService: TransaccionesService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.ingresoId = Number(this.route.snapshot.paramMap.get('id'));
-    this.ingresoOriginal = this.transaccionesService
-      .getControlGastos()
-      .ingresos.find((g) => g.id === this.ingresoId)!;
+    this.controlGastos = this.transaccionesService.getControlGastos();
+    this.ingresoNuevo = {
+      id: 0, // ID temporal; se asignará en el servicio
+      descripcion: '',
+      monto: 0,
+      categoria: { id: 0, nombre: '' },
+      fecha: new Date(),
+      total: 0
+    };
 
     this.categorias = this.transaccionesService.getCategoriasIngresos();
 
     this.anadirIngresoForm = this.fb.group({
-      descripcion: [this.ingresoOriginal.descripcion, Validators.required],
-      monto: [this.ingresoOriginal.monto, [Validators.required, Validators.min(0.01)]],
-      categoria: [this.ingresoOriginal.categoria.id, Validators.required],
+      descripcion: [, Validators.required],
+      monto: [[Validators.required, Validators.min(0.01)]],
+      categoria: [Validators.required],
       fecha: [
-        this.ingresoOriginal.fecha.toISOString().split('T')[0],
-        Validators.required,
+        // this.ingresoNuevo.fecha.toISOString().split('T')[0],
+        Validators.required
       ],
     });
+   
   }
 
   guardarNuevoIngreso(): void {
     if (this.anadirIngresoForm.valid) {
-      const ingresoActualizado: Ingreso = {
-        ...this.ingresoOriginal,
+      const ingresoNuevo: Ingreso = {
+        id: this.controlGastos.ingresos.length + 1, // Generar un ID único
         descripcion: this.anadirIngresoForm.value.descripcion,
         monto: this.anadirIngresoForm.value.monto,
         categoria: this.categorias.find(
-          (c) => c.id === Number(this.anadirIngresoForm.value.categoria)
+          (c) => c.nombre === this.anadirIngresoForm.value.categoria
         )!,
         fecha: new Date(this.anadirIngresoForm.value.fecha),
+        total: 0
       };
 
-      this.transaccionesService.actualizarIngreso(this.ingresoId, ingresoActualizado);
+      this.transaccionesService.agregarIngreso(ingresoNuevo);
       this.router.navigate(['/listaIngresos']);
     }
   }

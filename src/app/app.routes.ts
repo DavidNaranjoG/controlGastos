@@ -9,10 +9,12 @@ import { AgregarIngresoComponent } from './components/agregar-ingreso/agregar-in
 import { LoginComponent } from './components/login/login.component';
 import { RegistroComponent } from './components/registro/registro.component';
 import { InicioComponent } from './components/inicio/inicio.component';
+import { AgregarGastoComponent } from './components/agregar-gasto/agregar-gasto.component';
 
 export const routes: Routes = [
     { path: '', component: InicioComponent},
     { path: 'agregarIngreso', component: AgregarIngresoComponent }, // Ruta predeterminada para mostrar la lista
+    { path: 'agregarGasto', component: AgregarGastoComponent }, // Ruta predeterminada para mostrar la lista
     { path: 'editarGasto/:id', component: EditarGastoComponent },
     { path: 'editarIngreso/:id', component: EditarIngresoComponent },
     { path: 'listaGastos', component: ListaGastosComponent },
